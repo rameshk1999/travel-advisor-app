@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CircularProgress,
   Container,
@@ -11,15 +11,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import PlaceDetails from "./PlaceDetails";
-
-const List = ({ places }) => {
-  const [type, setType] = useState("restaurants");
-  const [rating, setRating] = useState(4.0);
+import { getPlacesData } from "../api";
+const List = ({ places, type, setType, rating, setRating, isLoading }) => {
+  console.log("place", type, rating);
 
   return (
     <div>
       <Container>
         <Typography variant="h5"> Restaurant and Places </Typography>
+
         <Box display="flex" justifyContent="space-between">
           <FormControl>
             <InputLabel>Type</InputLabel>
@@ -40,13 +40,17 @@ const List = ({ places }) => {
             </Select>
           </FormControl>
         </Box>
-        <Grid container spacing={4}>
-          {places?.map((place, i) => (
-            <Grid item key={i} xs={12}>
-              <PlaceDetails place={place} />
-            </Grid>
-          ))}
-        </Grid>
+        {isLoading ? (
+          <CircularProgress size="5rem" />
+        ) : (
+          <Grid container spacing={4}>
+            {places?.map((place, i) => (
+              <Grid item key={i} xs={12}>
+                <PlaceDetails place={place} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
     </div>
   );

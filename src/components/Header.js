@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -6,6 +6,7 @@ import InputBase from "@material-ui/core/InputBase";
 import { alpha, makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import { Autocomplete } from "@react-google-maps/api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({ setCoordinates }) {
+  const [autoComplete, setAutoComplete] = useState(null);
+  const onLoad = (autoC) => setAutoComplete(autoC);
+  const placeChanged = () => {
+    const lat = autoComplete.getPlace().geometry.location.lat();
+    const lng = autoComplete.getPlace().geometry.location.lng();
+    setCoordinates({ lat, lng });
+  };
   const classes = useStyles();
 
   return (
@@ -73,19 +81,22 @@ export default function SearchAppBar() {
             <Typography className={classes.title} variant="h6" noWrap>
               Travel Guide
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+
+            {/* <Autocomplete onLoad={onLoad} onPlaceChanged={placeChanged}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ "aria-label": "search" }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
+            </Autocomplete> */}
           </Toolbar>
         </Container>
       </AppBar>

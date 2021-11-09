@@ -12,6 +12,9 @@ import {
   Card,
   CardMedia,
   CardContent,
+  Chip,
+  CardActions,
+  Button,
 } from "@material-ui/core";
 import { LocationOnOutlined, Phone, Rating } from "@material-ui/icons";
 
@@ -42,6 +45,40 @@ const PlaceDetails = ({ place }) => {
             <Typography variant="subtitle2">{award.display_name}</Typography>
           </Box>
         ))}
+        {place?.cuisine?.map(({ name }) => (
+          <Chip
+            key={name}
+            size="small"
+            label={name}
+            style={{ marginRight: 3, marginBottom: 3 }}
+          />
+        ))}
+        {place?.address && (
+          <Typography gutterBottom variant="subtitle2">
+            <LocationOnOutlined /> {place.address}
+          </Typography>
+        )}
+        {place?.phone && (
+          <Typography gutterBottom variant="subtitle2">
+            <Phone /> {place.phone}
+          </Typography>
+        )}
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => window.open(place.web_url)}
+          >
+            Trip Advisor
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => window.open(place.website)}
+          >
+            Website
+          </Button>
+        </CardActions>
       </CardContent>
     </Card>
   );
